@@ -1,6 +1,6 @@
 module CaiSemiprimes
 using Primes
-export isFouvry
+export isFouvry,caiSemiprimes
 
 """
     isFouvry(p::Integer)
@@ -12,6 +12,24 @@ primes are A073024.
 function isFouvry(p::Integer)
   facs=factor(p-1)
   p>2 && big(maximum(keys(facs)))^3>big(p)^2
+end
+
+"""
+    caiSemiprimes(minPrime::Int,maxSemiprime::Int)
+
+List all squarefree Cài semiprimes less than or equal to maxSemiprime whose
+factors are at least minPrime.
+"""
+function caiSemiprimes(minPrime::Int,maxSemiprime::Int)
+  if minPrime<11
+    minPrime=11
+  end
+  maxPrime=max(minPrime,maxSemiprime÷minPrime)
+  # If maxPrime>√typemax(Int), this function will return garbage values.
+  # But it will also take a very long time or overflow the memory!
+  primeList=filter(isFouvry,primes(minPrime,maxPrime))
+  n=length(primeList)
+  sort(filter(x->x<=maxSemiprime,[primeList[i]*primeList[j] for i in 1:n for j in (i+1):n]))
 end
 
 end # module CaiSemiprimes
