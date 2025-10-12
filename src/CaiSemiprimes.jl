@@ -1,6 +1,6 @@
 module CaiSemiprimes
 using Primes
-export isFouvry,caiSemiprimes
+export isFouvry,caiSemiprimes,listTerms
 
 """
     isFouvry(p::Integer)
@@ -30,6 +30,16 @@ function caiSemiprimes(minPrime::Int,maxSemiprime::Int)
   primeList=filter(isFouvry,primes(minPrime,maxPrime))
   n=length(primeList)
   sort(filter(x->x<=maxSemiprime,[primeList[i]*primeList[j] for i in 1:n for j in (i+1):n]))
+end
+
+function listTerms()
+  list=caiSemiprimes(0,8192)
+  for i in eachindex(list)
+    if i>1
+      print(", ")
+    end
+    print(list[i])
+  end
 end
 
 end # module CaiSemiprimes
