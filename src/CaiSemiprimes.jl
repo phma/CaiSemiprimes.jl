@@ -1,6 +1,6 @@
 module CaiSemiprimes
 using Primes
-export isFouvry,caiSemiprimes,listTerms
+export isFouvry,caiSemiprimes,listTerms,writeBfile
 
 """
     isFouvry(p::Integer)
@@ -40,6 +40,16 @@ function listTerms()
     end
     print(list[i])
   end
+end
+
+function writeBfile()
+  list=caiSemiprimes(0,2^20)
+  file=open("b387952.txt","w")
+  for i in eachindex(list)
+    println(file,i,' ',list[i])
+  end
+  println(file)
+  close(file)
 end
 
 end # module CaiSemiprimes
