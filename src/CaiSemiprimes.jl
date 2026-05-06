@@ -1,6 +1,6 @@
 module CaiSemiprimes
 using Primes
-export isFouvry,caiSemiprimes,listTerms,writeBfile
+export isFouvry,estimateFouvryConstant,caiSemiprimes,listTerms,writeBfile
 
 """
     isFouvry(p::Integer)
@@ -12,6 +12,31 @@ primes are A073024.
 function isFouvry(p::Integer)
   facs=factor(p-1)
   p>2 && big(maximum(keys(facs)))^3>big(p)^2
+end
+
+"""
+    estimateFouvryConstant(a::T,b::T) where T<:Integer
+    estimateFouvryConstant(a::Integer)
+
+Compute the proportion of primes between `a` and `b`, or between `a`÷2 and `a`,
+which are Fouvry primes.
+"""
+function estimateFouvryConstant(a::T,b::T) where T<:Integer
+  if a<11
+    a=11
+  end
+  if b<11
+    b=11
+  end
+  if a>b
+    a,b=b,a
+  end
+  interprimes=primes(a,b)
+  count(isFouvry,interprimes)/length(interprimes)
+end
+
+function estimateFouvryConstant(a::Integer)
+  estimateFouvryConstant(a÷2,a)
 end
 
 """
